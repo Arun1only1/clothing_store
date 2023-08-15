@@ -52,3 +52,48 @@ export const addProduct = async (req, res) => {
 
   return res.status(200).send({ message: "Product is added successfully." });
 };
+
+// edit product
+export const editProduct = async (req, res) => {
+  // extract id from params
+  const productId = req.params.id;
+
+  // validate id
+  const isValidMongoId = checkMongoIdValidity(productId);
+
+  // if not valid mongoId, throw error
+  if (!isValidMongoId) {
+    return res.status(400).send({ message: "Invalid mongo id." });
+  }
+  // check if product exists
+  const product = await Product.findById(productId);
+
+  // if not product, throw not found error
+  if (!product) {
+    return res.status(404).send({ message: "Product does not exist." });
+  }
+  // edit product
+  const newData = req.body;
+
+  //   validate new data
+  try {
+    await productValidationSchema.validateAsync(newData);
+  } catch (error) {
+    return res.status(400).send({ message: error.message });
+  }
+
+  await Product.updateOne(
+    { _id: productId },
+    {
+      $set: {
+        name: newData.name,
+        price: newData.price,
+        quantity: newData.quantity,
+        color: newData.color,
+        brand: newData.brand,
+      },
+    }
+  );
+  // send appropriate response
+  return res.status(200).send({ message: "Product edited successfully." });
+};

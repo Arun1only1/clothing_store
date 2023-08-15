@@ -3,6 +3,7 @@ import {
   addProduct,
   deleteProduct,
   getAllProducts,
+  editProduct,
 } from "./product.service.js";
 
 // router
@@ -18,4 +19,5 @@ router.get("/products", getAllProducts);
 router.delete("/product/delete/:id", deleteProduct);
 
 // edit product
+router.put("/product/edit/:id", editProduct);
 export default router;
