@@ -4,6 +4,7 @@ import {
   deleteProduct,
   getAllProducts,
   editProduct,
+  getSingleProduct,
 } from "./product.service.js";
 
 // router
@@ -20,4 +21,7 @@ router.delete("/product/delete/:id", deleteProduct);
 
 // edit product
 router.put("/product/edit/:id", editProduct);
+
+// get single product
+router.get("/product/details/:id", getSingleProduct);
 export default router;

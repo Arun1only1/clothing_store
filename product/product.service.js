@@ -94,6 +94,31 @@ export const editProduct = async (req, res) => {
       },
     }
   );
+
   // send appropriate response
   return res.status(200).send({ message: "Product edited successfully." });
+};
+
+// get single product
+export const getSingleProduct = async (req, res) => {
+  // extract id from params
+  const productId = req.params.id;
+
+  // validate mongoId
+  const isValidMongoId = checkMongoIdValidity(productId);
+
+  // if not valid mongo id, throw error
+  if (!isValidMongoId) {
+    return res.status(400).send({ message: "Invalid mongo id." });
+  }
+
+  // check if product exists
+  const product = await Product.findOne({ _id: productId });
+
+  // if not product, throw error
+  if (!product) {
+    return res.status(404).send({ message: "Product does not exist." });
+  }
+  // send appropriate response
+  return res.status(200).send(product);
 };
