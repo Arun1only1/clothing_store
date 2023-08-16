@@ -35,6 +35,11 @@ const customerSchema = new mongoose.Schema({
     trim: true,
     enum: ["male", "female", "preferNotToSay"],
   },
+  purchasedItems: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Product",
+    required: false,
+  },
 });
 
 // create table(model)
